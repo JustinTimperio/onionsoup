@@ -1,0 +1,38 @@
+name: Build Release
+
+on:
+  push:
+    branches:
+      - "master"
+    tags:
+      - "v*" # For v1.0, v0.1.0, etc
+  pull_request:
+    branches:
+      - "master"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build
+        run: |
+          sudo apt update -y
+          sudo apt install -y docker golang git
+          go install github.com/fyne-io/fyne-cross@latest
+
+          ~/go/bin/fyne-cross linux -arch=amd64,arm64 -app-id="OnionSoup"
+          ~/go/bin/fyne-cross windows -arch=amd64,arm64 -app-id="Onion.Soup"
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            LICENSE
+            fyne-cross/dist/linux-amd64/onionsoup.tar.xz
+            fyne-cross/dist/linux-arm64/onionsoup.tar.xz
+            fyne-cross/dist/windows-amd64/onionsoup.exe.zip
+            fyne-cross/dist/windows-arm64/onionsoup.exe.zip

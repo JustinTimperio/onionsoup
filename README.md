@@ -27,20 +27,29 @@ This example highlights how 2 parties (Alice and Bob), can bootstrap a conversat
 5. The session will remain open until either party closes their session, which will terminate the conversation.
 
 ## Installation
-TODO: Add instructions for installing the prebuilt binaries
+Prebuilt Application Installers will be included in the Release section of this repo but currently some errors are being resolved in the build pipeline. See [this issue](https://github.com/JustinTimperio/onionsoup/issues/2)
 
 ## Building from Source
 
 To bundle the assets into the program run:
 ```bash
-~/go/bin/fyne bundle -package data -o data/bundle.go data/assets
+~/go/bin/fyne bundle -package data -o data/bundled.go data/assets
 ```
 
-To build a release version use the following:
+### Linux
 ```bash
-~/go/bin/fyne-cross windows -arch=amd64,arm64 -app-id="OnionSoup"
-~/go/bin/fyne-cross darwin -arch=amd64,arm64 -app-id="OnionSoup"
 ~/go/bin/fyne-cross linux -arch=amd64,arm64 -app-id="OnionSoup"
+```
+
+### Windows
+```bash
+~/go/bin/fyne-cross windows -arch=amd64,arm64 -app-id="Onion.Soup"
+```
+
+### Mac
+*Mac Builds are currently not working, please see [this issue](https://github.com/JustinTimperio/onionsoup/issues/1)*
+```bash
+~/go/bin/fyne-cross darwin -arch=amd64,arm64 -app-id="Onion.Soup" --macosx-sdk-path /full-path/macos-sdk/MacOSX15.2.sdk
 ```
 
 
