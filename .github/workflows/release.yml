@@ -20,7 +20,7 @@ jobs:
       - name: Build
         run: |
           sudo apt update -y
-          sudo apt install -y docker go git
+          sudo apt install -y docker golang git
           go install github.com/fyne-io/fyne-cross@latest
 
           ~/go/bin/fyne-cross linux -arch=amd64,arm64 -app-id="OnionSoup"
