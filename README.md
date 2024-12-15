@@ -27,7 +27,20 @@ This example highlights how 2 parties (Alice and Bob), can bootstrap a conversat
 5. The session will remain open until either party closes their session, which will terminate the conversation.
 
 ## Installation
-Prebuilt Application Installers will be included in the Release section of this repo but currently some errors are being resolved in the build pipeline. See [this issue](https://github.com/JustinTimperio/onionsoup/issues/2)
+
+### Linux
+1. Download the prebuilt `tar.xz` from the Release page and extract it.
+2. Install tor using the package manager (IE `sudo apt install tor`).
+3. Run `make user-install` 
+4. Open OnionSoup!
+
+### Windows
+1. Download the prebuilt `exe.zip` and extract it.
+2. Download and install the tor expert bundle from [here](https://www.torproject.org/download/tor/) and start the daemon service with `c:\Tor\tor.exe –-service install`
+3. Open OnionSoup!
+
+### Mac
+*Mac Builds are currently not working, please see [this issue](https://github.com/JustinTimperio/onionsoup/issues/1)*
 
 ## Building from Source
 
