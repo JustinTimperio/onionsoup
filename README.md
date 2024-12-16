@@ -35,7 +35,7 @@ This example highlights how 2 parties (Alice and Bob), can bootstrap a conversat
 4. Open OnionSoup!
 
 ### Windows
-1. Download the prebuilt `exe.zip` and extract it.
+1. Download the prebuilt `exe.zip` from the Release page and extract it.
 2. Download and install the tor expert bundle from [here](https://www.torproject.org/download/tor/) and start the daemon service with `c:\Tor\tor.exe –-service install`
 3. Open OnionSoup!
 

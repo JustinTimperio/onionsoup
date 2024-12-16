@@ -36,3 +36,4 @@ jobs:
             fyne-cross/dist/linux-arm64/onionsoup.tar.xz
             fyne-cross/dist/windows-amd64/onionsoup.exe.zip
             fyne-cross/dist/windows-arm64/onionsoup.exe.zip
+          token: ${{ secrets.GH_TOKEN }}
