@@ -28,8 +28,8 @@ jobs:
 
           mv fyne-cross/dist/linux-amd64/onionsoup.tar.xz fyne-cross/onionsoup_linux_amd64.tar.xz
           mv fyne-cross/dist/linux-arm64/onionsoup.tar.xz fyne-cross/onionsoup_linux_arm64.tar.xz
-          mv fyne-cross/dist/windows-amd64/onionsoup.tar.xz fyne-cross/onionsoup_windows_amd64.tar.xz
-          mv fyne-cross/dist/windows-arm64/onionsoup.tar.xz fyne-cross/onionsoup_windows_arm64.tar.xz
+          mv fyne-cross/dist/windows-amd64/onionsoup.exe.zip fyne-cross/onionsoup_windows_amd64.exe.zip
+          mv fyne-cross/dist/windows-arm64/onionsoup.exe.zip fyne-cross/onionsoup_windows_arm64.exe.zip
 
       - name: Release
         uses: softprops/action-gh-release@v2

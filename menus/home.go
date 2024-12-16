@@ -15,7 +15,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-const Version = "1.0.2"
+const Version = "1.0.3"
 
 func HomeView(w fyne.Window) fyne.CanvasObject {
 	logo := canvas.NewImageFromResource(data.Logo)
