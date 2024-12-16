@@ -5,7 +5,7 @@ on:
     branches:
       - "master"
     tags:
-      - "v*" # For v1.0, v0.1.0, etc
+      - "v*"
   pull_request:
     branches:
       - "master"
@@ -26,14 +26,19 @@ jobs:
           ~/go/bin/fyne-cross linux -arch=amd64,arm64 -app-id="OnionSoup"
           ~/go/bin/fyne-cross windows -arch=amd64,arm64 -app-id="Onion.Soup"
 
+          mv fyne-cross/dist/linux-amd64/onionsoup.tar.xz fyne-cross/onionsoup_linux_amd64.tar.xz
+          mv fyne-cross/dist/linux-arm64/onionsoup.tar.xz fyne-cross/onionsoup_linux_arm64.tar.xz
+          mv fyne-cross/dist/windows-amd64/onionsoup.tar.xz fyne-cross/onionsoup_windows_amd64.tar.xz
+          mv fyne-cross/dist/windows-arm64/onionsoup.tar.xz fyne-cross/onionsoup_windows_arm64.tar.xz
+
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
             LICENSE
-            fyne-cross/dist/linux-amd64/onionsoup.tar.xz
-            fyne-cross/dist/linux-arm64/onionsoup.tar.xz
-            fyne-cross/dist/windows-amd64/onionsoup.exe.zip
-            fyne-cross/dist/windows-arm64/onionsoup.exe.zip
+            fyne-cross/onionsoup_linux_amd64.tar.xz
+            fyne-cross/onionsoup_linux_arm64.tar.xz
+            fyne-cross/onionsoup_windows_amd64.exe.zip
+            fyne-cross/onionsoup_windows_arm64.exe.zip
           token: ${{ secrets.GH_TOKEN }}
