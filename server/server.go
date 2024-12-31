@@ -32,6 +32,7 @@ func NewRouteHandler() (*RouteHandler, error) {
 
 	t, err := tor.Start(nil, &tor.StartConf{
 		DataDir: path.Join(os.TempDir(), "tor", randomString(10)),
+		RetainTempDataDir: false,
 	})
 	if err != nil {
 		return nil, err

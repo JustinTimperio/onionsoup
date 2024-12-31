@@ -12,24 +12,56 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
+      - name: Setup Go 1.23
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Build
         run: |
+          ## Install Dependencies
           sudo apt update -y
-          sudo apt install -y docker golang git
+          sudo apt install -y git zip gzip tar apt-transport-https curl
           go install github.com/fyne-io/fyne-cross@latest
 
+          # Add Docker's official GPG key:
+          sudo apt install -y ca-certificates curl
+          sudo install -m 0755 -d /etc/apt/keyrings
+          sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+          sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+          # Add Docker to Apt sources:
+          echo \
+            "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+            $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+            sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          sudo apt-get update -y
+
+          # Install Docker
+          sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+          ## Check out the macos SDK from git 
+          git clone https://github.com/alexey-lysiuk/macos-sdk.git 
+
+          ## Build the App
           ~/go/bin/fyne-cross linux -arch=amd64,arm64 -app-id="OnionSoup"
           ~/go/bin/fyne-cross windows -arch=amd64,arm64 -app-id="Onion.Soup"
+          ~/go/bin/fyne-cross darwin -arch=amd64,arm64 -app-id="Onion.Soup" --macosx-sdk-path $(pwd)/macos-sdk/MacOSX12.3.sdk
 
+          ## Pack Up Each Release
           mv fyne-cross/dist/linux-amd64/onionsoup.tar.xz fyne-cross/onionsoup_linux_amd64.tar.xz
           mv fyne-cross/dist/linux-arm64/onionsoup.tar.xz fyne-cross/onionsoup_linux_arm64.tar.xz
           mv fyne-cross/dist/windows-amd64/onionsoup.exe.zip fyne-cross/onionsoup_windows_amd64.exe.zip
           mv fyne-cross/dist/windows-arm64/onionsoup.exe.zip fyne-cross/onionsoup_windows_arm64.exe.zip
+          tar -czf onionsoup_mac_amd64.tar.gz -C fyne-cross/dist/darwin-amd64/onionsoup.app onionsoup.app
+          tar -czf onionsoup_mac_arm64.tar.gz -C fyne-cross/dist/darwin-arm64/onionsoup.app onionsoup.app 
+          mv onionsoup_mac_amd64.tar.gz fyne-cross/onionsoup_mac_amd64.tar.gz
+          mv onionsoup_mac_arm64.tar.gz fyne-cross/onionsoup_mac_arm64.tar.gz
 
       - name: Release
         uses: softprops/action-gh-release@v2
@@ -41,4 +73,6 @@ jobs:
             fyne-cross/onionsoup_linux_arm64.tar.xz
             fyne-cross/onionsoup_windows_amd64.exe.zip
             fyne-cross/onionsoup_windows_arm64.exe.zip
+            fyne-cross/onionsoup_mac_amd64.tar.gz
+            fyne-cross/onionsoup_mac_arm64.tar.gz
           token: ${{ secrets.GH_TOKEN }}

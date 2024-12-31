@@ -36,11 +36,13 @@ This example highlights how 2 parties (Alice and Bob), can bootstrap a conversat
 
 ### Windows
 1. Download the prebuilt `exe.zip` from the Release page and extract it.
-2. Download and install the tor expert bundle from [here](https://www.torproject.org/download/tor/) and start the daemon service with `c:\Tor\tor.exe –-service install`
-3. Open OnionSoup!
+2. Download and extract the tor expert bundle from [here](https://www.torproject.org/download/tor/) 
+3. Add the path of the extracted `tor` exe to your `path` variable in the `Environment Variables` menu.
+4. Open OnionSoup!
 
 ### Mac
-*Mac Builds are currently not working, please see [this issue](https://github.com/JustinTimperio/onionsoup/issues/1)*
+1. Download the prebuilt `tar.gz` from the Release page and extract it to your Applications folder.
+2. Open OnionSoup!
 
 ## Building from Source
 
@@ -60,9 +62,8 @@ To bundle the assets into the program run:
 ```
 
 ### Mac
-*Mac Builds are currently not working, please see [this issue](https://github.com/JustinTimperio/onionsoup/issues/1)*
 ```bash
-~/go/bin/fyne-cross darwin -arch=amd64,arm64 -app-id="Onion.Soup" --macosx-sdk-path /full-path/macos-sdk/MacOSX15.2.sdk
+~/go/bin/fyne-cross darwin -app-id="Onion.Soup" --macosx-sdk-path /path/to/macos-sdk/MacOSX12.3.sdk
 ```
 
 
