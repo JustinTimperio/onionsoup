@@ -19,17 +19,32 @@ jobs:
 
       - name: Build
         run: |
+          ## Install Dependencies
           sudo apt update -y
-          sudo apt install -y docker golang git
+          sudo apt install -y docker golang git zip gzip tar
           go install github.com/fyne-io/fyne-cross@latest
 
+          ## Check out the macos SDK from git 
+          git clone -n --depth=1 --filter=tree:0 https://github.com/alexey-lysiuk/macos-sdk.git 
+          cd macos-sdk 
+          git sparse-checkout set --no-cone /MacOSX12.3.sdk
+          git checkout
+          cd ..
+
+          ## Build the App
           ~/go/bin/fyne-cross linux -arch=amd64,arm64 -app-id="OnionSoup"
           ~/go/bin/fyne-cross windows -arch=amd64,arm64 -app-id="Onion.Soup"
+          ~/go/bin/fyne-cross darwin -arch=amd64,arm64 -app-id="Onion.Soup" --macosx-sdk-path /home/runner/work/onionsoup/onionsoup/macos-sdk/MacOSX12.3.sdk
 
+          ## Pack Up Each Release
           mv fyne-cross/dist/linux-amd64/onionsoup.tar.xz fyne-cross/onionsoup_linux_amd64.tar.xz
           mv fyne-cross/dist/linux-arm64/onionsoup.tar.xz fyne-cross/onionsoup_linux_arm64.tar.xz
           mv fyne-cross/dist/windows-amd64/onionsoup.exe.zip fyne-cross/onionsoup_windows_amd64.exe.zip
           mv fyne-cross/dist/windows-arm64/onionsoup.exe.zip fyne-cross/onionsoup_windows_arm64.exe.zip
+          tar -czf onionsoup_mac_amd64.tar.gz -C fyne-cross/dist/darwin-amd64/onionsoup.app onionsoup.app
+          tar -czf onionsoup_mac_arm64.tar.gz -C fyne-cross/dist/darwin-arm64/onionsoup.app onionsoup.app 
+          mv onionsoup_mac_amd64.tar.gz fyne-cross/onionsoup_mac_amd64.tar.gz
+          mv onionsoup_mac_arm64.tar.gz fyne-cross/onionsoup_mac_arm64.tar.gz
 
       - name: Release
         uses: softprops/action-gh-release@v2
@@ -41,4 +56,6 @@ jobs:
             fyne-cross/onionsoup_linux_arm64.tar.xz
             fyne-cross/onionsoup_windows_amd64.exe.zip
             fyne-cross/onionsoup_windows_arm64.exe.zip
+            fyne-cross/onionsoup_mac_amd64.tar.gz
+            fyne-cross/onionsoup_mac_arm64.tar.gz
           token: ${{ secrets.GH_TOKEN }}
