@@ -12,8 +12,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
+      - name: Setup Go 1.23
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -21,7 +26,7 @@ jobs:
         run: |
           ## Install Dependencies
           sudo apt update -y
-          sudo apt install -y docker golang git zip gzip tar
+          sudo apt install -y docker git zip gzip tar
           go install github.com/fyne-io/fyne-cross@latest
 
           ## Check out the macos SDK from git 
