@@ -25,16 +25,12 @@ jobs:
           go install github.com/fyne-io/fyne-cross@latest
 
           ## Check out the macos SDK from git 
-          git clone -n --depth=1 --filter=tree:0 https://github.com/alexey-lysiuk/macos-sdk.git 
-          cd macos-sdk 
-          git sparse-checkout set --no-cone /MacOSX12.3.sdk
-          git checkout
-          cd ..
+          git clone https://github.com/alexey-lysiuk/macos-sdk.git 
 
           ## Build the App
           ~/go/bin/fyne-cross linux -arch=amd64,arm64 -app-id="OnionSoup"
           ~/go/bin/fyne-cross windows -arch=amd64,arm64 -app-id="Onion.Soup"
-          ~/go/bin/fyne-cross darwin -arch=amd64,arm64 -app-id="Onion.Soup" --macosx-sdk-path /home/runner/work/onionsoup/onionsoup/macos-sdk/MacOSX12.3.sdk
+          ~/go/bin/fyne-cross darwin -arch=amd64,arm64 -app-id="Onion.Soup" --macosx-sdk-path $(pwd)/macos-sdk/MacOSX12.3.sdk
 
           ## Pack Up Each Release
           mv fyne-cross/dist/linux-amd64/onionsoup.tar.xz fyne-cross/onionsoup_linux_amd64.tar.xz
